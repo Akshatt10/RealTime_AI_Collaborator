@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -14,6 +15,7 @@ const userSchema = new mongoose.Schema({
 
   password: { 
     type: String,
+    select: false
   }
 });
 
@@ -21,3 +23,19 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.hashPassword = async function(password) {
   return await bcrypt.hash(password, 10);
 };
+
+
+userSchema.methods.isValidPassword = async function(password) {
+  return await bcrypt.compare(password, this.password);
+}
+
+
+userSchema.methods.generateJWT = function(email) {
+  return jwt.sign({ email: this.email }, process.env.JWT_SECRET)
+}
+
+
+
+const User = mongoose.model('user', userSchema);
+
+export default User;
