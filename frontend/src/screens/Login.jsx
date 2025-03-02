@@ -12,7 +12,7 @@ const Login = () => {
     function submitHandler(e){
         e.preventdefault()
         
-        axios.post('./login',{
+        axios.post('/users/login',{
             email,
             password
         }).then((res) => {
