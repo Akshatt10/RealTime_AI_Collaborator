@@ -81,3 +81,16 @@ export const logoutUserController  = async (req, res) => {
     } catch(e){
         res.status(400).send(e.message);
     }}
+
+export const getAllUsersController = async (req, res) => {
+    try{
+
+        const loggedInUser = await userModel.findOne({
+            email: req.user.email
+        });
+        const allusers = await userService.getAllUsers({userId: loggedInUser._id});
+        res.status(200).json({ allusers });
+    } catch(e){
+        res.status(400).send(e.message);
+    }
+}

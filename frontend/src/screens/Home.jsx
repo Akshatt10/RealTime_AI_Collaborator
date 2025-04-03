@@ -13,20 +13,28 @@ const Home = () => {
     const navigate = useNavigate()
 
     function createProject(e) {
-        e.preventDefault()
-        console.log({ projectName })
-
-        axios.post('/projects/create', {
-            name: projectName,
+        e.preventDefault();
+        console.log({ projectName });
+    
+        const token = localStorage.getItem("token"); // Retrieve token from local storage
+    
+        axios.post('/projects/create', 
+            { name: projectName }, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+        .then((res) => {
+            console.log(res);
+            setIsModalOpen(false);
         })
-            .then((res) => {
-                console.log(res)
-                setIsModalOpen(false)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        .catch((error) => {
+            console.log(error);
+        });
     }
+    
 
     // useEffect(() => {
     //     axios.get('/projects/all').then((res) => {
