@@ -2,6 +2,7 @@ import projectModel from "../models/project.model.js";
 import mongoose from "mongoose";
 import userModel from "../models/user.model.js";
 
+
 export const createProject = async ({name,userId}) => {
 
     if (!name) {
@@ -91,7 +92,7 @@ export const projectById = async ({ projectId })  => {
 
     const project = await projectModel.findOne({
         _id:projectId
-    }).populate('users');
+    }).populate('users')
 
     if (!project) {
         throw new Error('Project not found');
